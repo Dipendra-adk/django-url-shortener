@@ -1,0 +1,81 @@
+{% extends 'shortener/base.html' %} {% block title %}Create Short URL
+<!-- vjs -->
+{% endblock %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 col-md-9">
+    <div class="card shadow-sm p-4">
+      <h4 class="mb-3">Create Short URL</h4>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Original URL</label>
+          <input
+            type="url"
+            name="original_url"
+            class="form-control"
+            placeholder="https://example.com"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            Custom Short URL <span class="text-muted">(optional)</span>
+          </label>
+          <input
+            type="text"
+            name="custom_key"
+            class="form-control"
+            placeholder="my-custom-link"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            Expiration Time (optional)
+          </label>
+          <input
+            type="datetime-local"
+            name="expires_at"
+            class="form-control"
+            value="{{ url.expires_at | date:'Y-m-d\TH:i' }}"
+          />
+        </div>
+
+        <button class="btn btn-primary w-100">Shorten URL</button>
+      </form>
+
+      {% if error %}
+      <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endif %} {% if short_url %}
+      <div class="alert alert-success mt-4">
+        <p class="mb-1 fw-semibold">Short URL created:</p>
+        <div class="d-flex align-items-center justify-content-between">
+          <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            onclick="navigator.clipboard.writeText('{{ short_url }}')"
+          >
+            Copy
+          </button>
+        </div>
+      </div>
+      {% endif %} {% if short_url %}
+      <p>Short URL:</p>
+      <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+
+      {% if request.user.shortenedurl_set.last.qr_code %}
+      <div style="margin-top: 15px">
+        <img
+          src="{{ request.user.shortenedurl_set.last.qr_code.url }}"
+          alt="QR Code"
+          width="200"
+        />
+      </div>
+      {% endif %} {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
