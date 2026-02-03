@@ -1,0 +1,21 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Database
+db.sqlite3
+
+# Environment variables
+.env
+
+# Static files (optional if using Whitenoise)
+staticfiles/
+
+# Media uploads
+media/
+
+# OS files
+.DS_Store
