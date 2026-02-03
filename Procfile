@@ -1,1 +1,2 @@
-web: gunicorn urlshortener.wsgi:application
+web: gunicorn urlshortener.urlshortener.wsgi:application
+
